@@ -1,14 +1,15 @@
- let populationSize = 100;
- let trackImage;
+let populationSize = 100;
+let carSystem;
+let trackImage;
 
 function setup() {
 	createCanvas(500, 500);
 	trackImage = loadImage('assets/track.png');
+	carSystem = new CarSystem(populationSize);
 }
 
 function draw() {
-	background(255);
+	clear();
 	image(trackImage, 0, 0);
-	fill(255, 0, 0);
-	circle(width/2, height/2, width/4);
+	carSystem.updateAndDisplay();
 }

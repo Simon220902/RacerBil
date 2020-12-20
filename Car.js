@@ -1,6 +1,6 @@
 class Car{
     constructor(){
-        this.pos = createVector(60, 232);
+        this.pos = createVector(100, 232);
         this.vel = createVector(0, 5);
     }
 
@@ -11,7 +11,7 @@ class Car{
         push();
             stroke(100);
             fill(100);
-            ellipse(this.pos.x, this.pos.y, 10, 10);
+            circle(this.pos.x, this.pos.y, 10);
         pop();
     }
     update(){

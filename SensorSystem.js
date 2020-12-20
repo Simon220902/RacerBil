@@ -1,7 +1,7 @@
 class SensorSystem{
     constructor(){
         this.sensorMag = 50;
-        this.sensorAngle = PI*2/8;
+        this.sensorAngle = 3.14*2/8;
     
         this.anchorPos = createVector();
         
@@ -30,6 +30,7 @@ class SensorSystem{
     }
     display(){
         push();
+            stroke(100);
             strokeWeight(0.5);
             //Drawing a circle if sensor sees white
             if(this.frontSensorSignal){
@@ -45,9 +46,10 @@ class SensorSystem{
                 circle(this.anchorPos.x+this.sensorVectorRight.x, this.anchorPos.y+this.sensorVectorRight.y, 8)
             }
             //Drawing the sensor vector lines
-            [this.sensorVectorFront, this.sensorVectorLeft, this.sensorVectorRight].forEach(sensorVector =>{
-                line(this.anchorPos.x, this.anchorPos.y, this.anchorPos.x + sensorVector.y, this.anchorPos.y + sensorVector.y);
-            })
+            line(this.anchorPos.x, this.anchorPos.y, this.anchorPos.x + this.sensorVectorFront.x, this.anchorPos.y + this.sensorVectorFront.y);
+            line(this.anchorPos.x, this.anchorPos.y, this.anchorPos.x + this.sensorVectorLeft.x, this.anchorPos.y + this.sensorVectorLeft.y);
+            line(this.anchorPos.x, this.anchorPos.y, this.anchorPos.x + this.sensorVectorRight.x, this.anchorPos.y + this.sensorVectorRight.y);
+            
             //Drawing a circle at the car according to whether it is inside the track
             // if not it is red according to how long it has been outside the track
             // if it is then it is green according to how much it has gone around.
@@ -62,24 +64,24 @@ class SensorSystem{
     }
     update(pos, vel){
         //Collision detection
-        this.frontSensorSignal = trackImage.get(int(pos.x+this.sensorVectorFront.x), int(pos.y+this.sensorVectorFront.y))==-1;
-        this.leftSensorSignal = trackImage.get(int(pos.x+this.sensorVectorLeft.x), int(pos.y+this.sensorVectorLeft.y))==-1;
-        this.rightSensorSignal = trackImage.get(int(pos.x+this.sensorVectorRight.x), int(pos.y+this.sensorVectorRight.y))==-1;
+        this.frontSensorSignal = sum(trackImage.get(int(pos.x+this.sensorVectorFront.x), int(pos.y+this.sensorVectorFront.y))) > 300; 
+        this.leftSensorSignal = sum(trackImage.get(int(pos.x+this.sensorVectorLeft.x), int(pos.y+this.sensorVectorLeft.y))) > 300;
+        this.rightSensorSignal = sum(trackImage.get(int(pos.x+this.sensorVectorRight.x), int(pos.y+this.sensorVectorRight.y))) > 300;
 
         //Crash detection
-        let colorCarPosition = trackImage.get(int(pos.x, pos.y));
-        if(colorCarPosition == -1){
-            this.whiteSensorFrameCount += 1;
+        let colorCarPosition = trackImage.get(int(pos.x), int(pos.y));
+        if(sum(colorCarPosition) > 500){
+            this.whiteSensorFrameCount = this.whiteSensorFrameCount+1;
         }
 
         //Laptime calculation
         let currentGreenDetection = false;
-        if(red(colorCarPosition) == 0 && blue(colorCarPosition) == 0 && currentGreenDetection(colorCarPosition) == 0){
+        if(red(colorCarPosition) == 0 && blue(colorCarPosition) == 0 && green(colorCarPosition) != 0){
             currentGreenDetection = true;
         }
         if(this.lastGreenDetection && !currentGreenDetection){ //Sidst var der grøn, ikke længere, betyder vi har passeret målstregen
             this.lapTimeInFrames = frameCount - this.lastTimeInFrames;
-            this.lastTimeInFrames = framCount;
+            this.lastTimeInFrames = frameCount;
         }
         this.lastGreenDetection = currentGreenDetection;
         
@@ -94,18 +96,22 @@ class SensorSystem{
         }
         this.lastRotationAngle = currentRotationAngle;
 
-        updateSensorVectors(vel);
+        this.updateVectors(vel);
         this.anchorPos.set(pos.x, pos.y);
     }
     updateVectors(vel){
         if(vel.mag != 0){
             this.sensorVectorFront.set(vel);
             this.sensorVectorFront.normalize();
-            this.sensorVectorFront.sensorMag();
+            this.sensorVectorFront.mult(this.sensorMag);
         }
         this.sensorVectorLeft.set(this.sensorVectorFront);
         this.sensorVectorLeft.rotate(-this.sensorAngle);
         this.sensorVectorRight.set(this.sensorVectorFront);
         this.sensorVectorRight.rotate(this.sensorAngle);
     }
+}
+
+function sum(a){
+    return a.reduce((x, y)=>x+y);
 }

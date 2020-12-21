@@ -3,18 +3,38 @@ let carSystem;
 let trackImage;
 
 function setup() {
-	createCanvas(500, 500);
+	let canvas = createCanvas(500, 500);
+	canvas.parent("canvas");
 	trackImage = loadImage('assets/track.png');
 	carSystem = new CarSystem(populationSize);
 }
 
 function draw() {
+	let minLapTime = 10000;
+	let maxClockWiseRotationFrameCounter = 0;
+	let minClockWiseRotationFrameCounter = 0;
+	carSystem.carControllerList.forEach(carController => {
+		if(carController.sensorSystem.lapTimeInFrames < minLapTime){
+			minLapTime = carController.sensorSystem.lapTimeInFrames;
+		}
+		if(carController.sensorSystem.clockWiseRotationFrameCounter > maxClockWiseRotationFrameCounter){
+			maxClockWiseRotationFrameCounter = carController.sensorSystem.clockWiseRotationFrameCounter;
+		}
+		else if(carController.sensorSystem.clockWiseRotationFrameCounter < minClockWiseRotationFrameCounter){
+			minClockWiseRotationFrameCounter = carController.sensorSystem.clockWiseRotationFrameCounter;
+		}
+	});
+	console.log("SMALLEST LAP TIME: ", minLapTime);
+	console.log("MAX ROTATION: ", maxClockWiseRotationFrameCounter);
+	console.log("MIN ROTATION: ", minClockWiseRotationFrameCounter);
+	
+
 	clear();
 	image(trackImage, 0, 0);
 	carSystem.updateAndDisplay();
 
 
-	//Sortering
+	//Frasortering hver 200. frame
 
 	if(frameCount%200 == 0){
 		for(let i = carSystem.carControllerList.length-1; i >= 0; i--){

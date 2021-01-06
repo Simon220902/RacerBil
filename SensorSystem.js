@@ -1,3 +1,5 @@
+//Possibly add a self relvolving detection, which should be as small as possible
+
 class SensorSystem{
     constructor(){
         this.sensorMag = 50;
@@ -55,9 +57,9 @@ class SensorSystem{
             // if it is then it is green according to how much it has gone around.
             strokeWeight(2);
             if(this.whiteSensorFrameCount > 0){
-                fill(this.whiteSensorFrameCount, 0, 0);
+                fill(this.whiteSensorFrameCount+100, 0, 0);
             }else{
-                fill(0, this.clockWiseRotationFrameCounter, 0);
+                fill(0, 10*Math.abs(this.clockWiseRotationFrameCounter), 0);
             }
             circle(this.anchorPos.x, this.anchorPos.y, 10);
         pop();
@@ -70,7 +72,7 @@ class SensorSystem{
 
         //Crash detection
         let colorCarPosition = trackImage.get(int(pos.x), int(pos.y));
-        if(sum(colorCarPosition) > 500){
+        if(sum([red(colorCarPosition),green(colorCarPosition),blue(colorCarPosition)]) > 500){
             this.whiteSensorFrameCount = this.whiteSensorFrameCount+1;
         }
 

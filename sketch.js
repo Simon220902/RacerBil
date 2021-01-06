@@ -13,20 +13,27 @@ function draw() {
 	let minLapTime = 10000;
 	let maxClockWiseRotationFrameCounter = 0;
 	let minClockWiseRotationFrameCounter = 0;
+	let actualMin = 100;
 	carSystem.carControllerList.forEach(carController => {
 		if(carController.sensorSystem.lapTimeInFrames < minLapTime){
 			minLapTime = carController.sensorSystem.lapTimeInFrames;
 		}
-		if(carController.sensorSystem.clockWiseRotationFrameCounter > maxClockWiseRotationFrameCounter){
-			maxClockWiseRotationFrameCounter = carController.sensorSystem.clockWiseRotationFrameCounter;
+		let rot = carController.sensorSystem.clockWiseRotationFrameCounter;
+		if(rot > maxClockWiseRotationFrameCounter){
+			maxClockWiseRotationFrameCounter = rot;
 		}
-		else if(carController.sensorSystem.clockWiseRotationFrameCounter < minClockWiseRotationFrameCounter){
-			minClockWiseRotationFrameCounter = carController.sensorSystem.clockWiseRotationFrameCounter;
+		else if(rot < minClockWiseRotationFrameCounter){
+			minClockWiseRotationFrameCounter = rot;
+		}
+		if(Math.abs(rot) < actualMin){
+			actualMin = Math.abs(rot);
 		}
 	});
-	console.log("SMALLEST LAP TIME: ", minLapTime);
+/*	console.log("SMALLEST LAP TIME: ", minLapTime);
 	console.log("MAX ROTATION: ", maxClockWiseRotationFrameCounter);
 	console.log("MIN ROTATION: ", minClockWiseRotationFrameCounter);
+	console.log("ACTUAL MIN: ", actualMin);
+*/
 	
 
 	clear();
@@ -35,13 +42,18 @@ function draw() {
 
 
 	//Frasortering hver 200. frame
-
-	if(frameCount%200 == 0){
-		for(let i = carSystem.carControllerList.length-1; i >= 0; i--){
-			let s = carSystem.carControllerList[i].sensorSystem;
-			if(s.whiteSensorFrameCount > 0){
-				carSystem.carControllerList.splice(i, 1);
-			}
+	//Det burde nok være hver 10000 frame ift. at de på et tidspunkt også skal kunne køre rundt.
+	if(frameCount%500 == 0){
+		carSystem.discard();
+		console.log("BEFORE: ", carSystem.populationBefore);
+		console.log("AFTER: ", carSystem.populationAfter);
+		
+		// Hvis der ikke frasorteres mere end 1/5 laver vi en ny populations?
+		if(carSystem.populationAfter > carSystem.populationBefore * 0.80){
+			console.log("========================");
+			console.log("REPOPULATING");
+			console.log("========================");
+			carSystem.repopulate();
 		}
 	}
 

@@ -1,8 +1,9 @@
 class CarController{
     constructor(){
-        this.variance = 2;
+        this.variance = 0.75;
+        this.mutationAmount = 0.5;
         this.car = new Car();
-        this.brain = new NeuralNetwork(this.variance);
+        this.brain = new NeuralNetwork(this.variance, this.mutationAmount);
         this.sensorSystem = new SensorSystem();
     }
 
@@ -26,5 +27,15 @@ class CarController{
     display(){
         this.car.display();
         this.sensorSystem.display();
-    } 
+    }
+
+    mutate(){
+        this.brain.mutate();
+    }
+
+    copy(){
+        let carController = new CarController();
+        carController.brain = this.brain.copy();
+        return carController;
+    }
 }

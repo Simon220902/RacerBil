@@ -1,12 +1,18 @@
 let populationSize = 100;
 let carSystem;
 let trackImage;
+let track;
+
 
 function setup() {
 	let canvas = createCanvas(500, 500);
 	canvas.parent("canvas");
-	trackImage = loadImage('assets/track.png');
-	carSystem = new CarSystem(populationSize);
+	newTrack();
+}
+function newTrack(){
+	track = new Track(document.getElementById("JSON-input").value);
+	trackImage = track.trackImage;
+	carSystem = new CarSystem(populationSize, track.startingPosition);
 }
 
 function draw() {

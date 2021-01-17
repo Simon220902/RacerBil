@@ -1,6 +1,6 @@
 class Car{
-    constructor(){
-        this.pos = createVector(100, 232);
+    constructor(startX, startY){
+        this.pos = createVector(startX, startY);
         this.vel = createVector(0, 5);
     }
 

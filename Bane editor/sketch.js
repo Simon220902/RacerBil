@@ -1,5 +1,5 @@
 let track;
-let trackWidth = 50;
+let trackWidth = 70;
 let showPoints = true;
 let fillTrack = false;
 let placingStartingPoint = false;
@@ -29,4 +29,11 @@ function keyPressed(){
 	}else if(key == 'e'){
 		track.endTrack();
 	}
+}
+
+function updateTrackWidth(){
+	let newTrackWidth = document.getElementById('trackWidthSlider').value;
+	trackWidth = newTrackWidth;
+	track.width = newTrackWidth;
+	document.getElementById("trackWidthValue").innerHTML = newTrackWidth;
 }

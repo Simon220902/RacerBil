@@ -2,7 +2,7 @@
 
 class SensorSystem{
     constructor(){
-        this.sensorMag = 50;
+        this.sensorMag = sensorMag;
         this.sensorAngle = 3.14*2/8;
     
         this.anchorPos = createVector();
@@ -105,6 +105,7 @@ class SensorSystem{
         if(vel.mag != 0){
             this.sensorVectorFront.set(vel);
             this.sensorVectorFront.normalize();
+            console.log("JJJJAJAS");
             this.sensorVectorFront.mult(this.sensorMag);
         }
         this.sensorVectorLeft.set(this.sensorVectorFront);

@@ -11,9 +11,14 @@ class CarSystem{
             this.carControllerList.push(carController);
         }
         let populationBefore = 0;
-        let populationAfter = 0;    
+        let populationAfter = 0;
+        this.bestCar = this.carControllerList[0];
     }
-
+    resituate(newStartPos){
+        this.carControllerList.forEach(car=>{
+            car.resituate(newStartPos);
+        });
+    }
     updateAndDisplay(){
         this.carControllerList.forEach(carController => {
             carController.update();
@@ -54,9 +59,10 @@ class CarSystem{
         let newCarControllerList = [];
         //Add the the best of the previous generations
         newCarControllerList.push(this.carControllerList[0]);
+        this.bestCar = this.carControllerList[0];
         //newCarControllerList.push(this.carControllerList[1]);
         //newCarControllerList.push(this.carControllerList[2]);
-        for(let i = 3; i < populationSize; i++){
+        for(let i = 3; i < this.populationSize; i++){
             let copyRandomController = this.carControllerList[Math.floor(Math.random()*this.carControllerList.length)].copy();
             //Mutate the new population
             //  - This is done by changing the weights and biases very slightly
@@ -66,11 +72,10 @@ class CarSystem{
 
         //New population take over (if the old ones should be kept that would be here)
         this.carControllerList = newCarControllerList;
+
+        putMessage("********DONE WITH REPOPULATING!********");
         console.log("BEST LAP-TIME: ", this.carControllerList[0].sensorSystem.lapTimeInFrames);
-        console.log("************************************");
-        console.log("DONE WITH REPOPULATING!!!!!!!!!!!!!!");
-        console.log("************************************");
-    }
+        }
 }
 /*
 function deepCopy(obj){

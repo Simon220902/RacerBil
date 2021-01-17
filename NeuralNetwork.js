@@ -1,12 +1,11 @@
 //PROBLEM IN COPYING
 class NeuralNetwork{
-    constructor(variance, mutationAmount){
+    constructor(){
         this.variance = variance;
         this.mutationAmount = mutationAmount; // in fraction which also relies on the variance
         this.weights = new Array(8).fill(0);
         this.biases = new Array(3).fill(0);
     }
-
     randomize(){
         for(let i = 0; i < this.weights.length; i++){
             this.weights[i] = randomNumber(-this.variance, this.variance);

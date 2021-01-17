@@ -1,11 +1,14 @@
 class CarController{
     constructor(startPos){
         this.startPos = startPos;
-        this.variance = 0.75;
-        this.mutationAmount = 0.5;
         this.car = new Car(startPos.x, startPos.y);
-        this.brain = new NeuralNetwork(this.variance, this.mutationAmount);
+        this.brain = new NeuralNetwork();
         this.sensorSystem = new SensorSystem();
+    }
+
+    resituate(newStartPos){
+        this.startPos = newStartPos;
+        this.car.pos = createVector(newStartPos.x, newStartPos.y);
     }
 
     update(){

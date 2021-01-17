@@ -12,27 +12,40 @@
   </head>
   <body>
 
-
+    <h1>Racerbils evolution - Simon Lykke Andersen</h1>
+    <h3>Hvis der ikke er nogen, der kører rundt så prøv at genstarte siden.</h3>
     <div id="canvas"></div>
-    <textarea rows=20 cols=50 id="JSON-input">{"points":[{"x":377,"y":279,"num":0},{"x":281,"y":396,"num":1},{"x":164,"y":396,"num":2},{"x":84,"y":366,"num":3},{"x":49,"y":321,"num":4},{"x":53,"y":250,"num":5},{"x":75,"y":184,"num":6},{"x":131,"y":127,"num":7},{"x":208,"y":106,"num":8},{"x":282,"y":140,"num":9},{"x":312,"y":168,"num":10},{"x":344,"y":208,"num":11},{"x":348,"y":239,"num":12}],"innerPoints":[{"x":352.01118027905545,"y":278.25241123996443,"num":0},{"x":270.31000192466723,"y":373.4007977762625,"num":1},{"x":168.46062013734343,"y":371.4011612471173,"num":2},{"x":98.8145785193794,"y":345.86226767252225,"num":3},{"x":72.86574390550116,"y":313.5551180105368,"num":4},{"x":77.55474675356008,"y":254.69727706959364,"num":5},{"x":96.32421642602833,"y":197.04905336857442,"num":6},{"x":143.6437207088071,"y":148.567019419421,"num":7},{"x":205.94680936622956,"y":130.91554551322122,"num":8},{"x":268.07413610548025,"y":160.76223289512262,"num":9},{"x":293.6619041144877,"y":184.99159319468765,"num":10},{"x":320.98841771857076,"y":217.77072571025369,"num":11},{"x":324.7631845643538,"y":248.22227783195214,"num":12}],"outerPoints":[{"x":401.98881972094455,"y":279.74758876003557,"num":0},{"x":291.68999807533277,"y":418.5992022237375,"num":1},{"x":159.5393798626566,"y":420.5988387528828,"num":2},{"x":69.1854214806206,"y":386.13773232747775,"num":3},{"x":25.13425609449884,"y":328.4448819894632,"num":4},{"x":28.445253246439915,"y":245.30272293040636,"num":5},{"x":53.675783573971685,"y":170.95094663142555,"num":6},{"x":118.35627929119289,"y":105.43298058057901,"num":7},{"x":210.0531906337704,"y":81.0844544867788,"num":8},{"x":295.92586389451975,"y":119.23776710487739,"num":9},{"x":330.33809588551236,"y":151.00840680531238,"num":10},{"x":367.01158228142924,"y":198.22927428974634,"num":11},{"x":371.2368154356462,"y":229.77772216804786,"num":12}]}</textarea>
-    <button onclick="newTrack();">Restart befolkning på den nye bane beskrevet i den nye JSON indsat ovenover</button>
-    <h1>HVAD SKAL JEG HUSKE AT FORKLARE</h1>
+    <h3>PROGRAM BESKEDER:</h3>
+    <p id="messages"></p>
+
+    <h3>STATISTIK:</h3>
+    <p id="statistics"></p>
+    <h3>Her kan du ændre på diverse befolkningsfaktorer (tryk på den røde knap under tekstfeltet for at de træder i kraft):</h3>
     <ul>
-      <li>Hvordan virker repopulationen altså reproduction</li>
-      <li>Også at jeg har arbejdet på at oversætte det til js.</li>
-      <li>Måske, hvis jeg når det også hvordan jeg ændrede øvrige aspekter</li>
+      <li><b>Generationsstørrelse: </b> <div id="populationSize">100</div> <input type="range" min="20" max="500" value="100" id="populationSizeSlider" oninput="updatePopulationSize()"> </li>
+      <li><b>Vægt/Bias varians (styrer bl.a. max drej): </b> </b> <div id="variance">0.4</div> <input type="range" step="0.01" min="0.1" max="2" value="0.4" id="varianceSlider" oninput="updateVarianceMutation()"> </li>
+      <li><b>Mutations mulighed (ud fra varians): </b> <div id="mutation">0.20</div> <input type="range" step="0.01" min="0.01" max="1" value="0.2" id="mutationSlider" oninput="updateVarianceMutation()"> </li>
     </ul>
 
-
-
-    <h1>NOTER TIL MIG SELV:</h1>
-
-    <p>Så parametrene vi skal vælge ud fra er hovedsageligt:</p>
+    <h1>Lav din egen bane <a href="Bane editor/index.html">her!!!!!!!!!!!!!!!!!!!!!!!</a></h1>
+    
+    <textarea rows=20 cols=50 id="JSON-input">{"points":[{"x":244,"y":338.84375,"num":0},{"x":323,"y":350.84375,"num":1},{"x":380,"y":300.84375,"num":2},{"x":391,"y":165.84375,"num":3},{"x":354,"y":113.84375,"num":4},{"x":250,"y":75.84375,"num":5},{"x":137,"y":110.84375,"num":6},{"x":102,"y":213.84375,"num":7},{"x":74,"y":277.84375,"num":8},{"x":73,"y":331.84375,"num":9},{"x":119,"y":371.84375,"num":10},{"x":183,"y":358.84375,"num":11}],"innerPoints":[{"x":240.64078205922684,"y":298.4833033371298,"num":0},{"x":313.1708373126591,"y":317.25226951958973,"num":1},{"x":348.73217191394883,"y":285.1172460407231,"num":2},{"x":357.254638772007,"y":175.13086987605777,"num":3},{"x":332.781123082377,"y":141.67824770257704,"num":4},{"x":249.1259523869577,"y":110.83283459462945,"num":5},{"x":165.24569931944293,"y":139.86840279646978,"num":6},{"x":139.75944141149077,"y":228.48870081221497,"num":7},{"x":113.56353548758543,"y":286.50265638144157,"num":8},{"x":110.0086466103131,"y":315.3935197258378,"num":9},{"x":129.32063939085756,"y":332.6808287279105,"num":10},{"x":172.6425911060425,"y":319.69053709220185,"num":11}],"outerPoints":[{"x":247.3592179407731,"y":379.2041966628702,"num":0},{"x":332.8291626873409,"y":384.43523048041027,"num":1},{"x":411.26782808605117,"y":316.5702539592769,"num":2},{"x":424.745361227993,"y":156.55663012394223,"num":3},{"x":375.218876917623,"y":86.00925229742295,"num":4},{"x":250.8740476130423,"y":40.85466540537057,"num":5},{"x":108.75430068055707,"y":81.81909720353022,"num":6},{"x":64.24055858850923,"y":199.19879918778506,"num":7},{"x":34.43646451241458,"y":269.18484361855843,"num":8},{"x":35.99135338968693,"y":348.2939802741622,"num":9},{"x":108.67936060914242,"y":411.0066712720895,"num":10},{"x":193.3574088939575,"y":397.99696290779815,"num":11}]}</textarea>
+    <button style="background-color: lightgreen" onclick="newTrackSamePopulation();">Genanvend befolkning på den nye bane beskrevet i den nye JSON indsat ovenover</button>
+    <button style="background-color: red" onclick="newTrackNewPopulation();">Restart befolkning på den nye bane beskrevet i den nye JSON indsat ovenover</button>
+    <h1>HVORDAN VIRKER MIN EVOLUTIONÆRE ALGORITME:</h1>
+    <p>Der fjernes dem der har været ude på det hvide og derefter sorteres der efter følgende:</p>
     <ul>
       <li> <b>whiteSensorFrameCount</b> Altså om de er inde på banen (vi fjerne dem der ikke er)</li>
       <li> <b>clockWiseRotationFrameCounter</b> Altså om de spinner rundt om sig selv (kig på den absolutte værdi, der skal være så lav som mulig (altså tæt på nul))</li>
     </ul>
-	<main>
-	</main>
+    <p>Den bedste fra sidste generation gemmes alle andre er ny genereret ud fra mutations og varians kriterierne.</p>
+    <h1>HVAD HAR JEG BRUGT MIN TID PÅ</h1>
+    <ul>
+      <li>Den første: På at eksperimentere med det udleverede</li>
+      <li>Den anden: På at oversætte det til js.</li>
+      <li>Den tredje: På at lave den evolutionære del. Fitness og reproduktion.</li>
+      <li>Den fjerde: På at lave bane-editoren (matematikken til det gav mig mange problemer.</li>
+      <li>Den femte: På at integrere den med den anden.</li>
+    </ul>
   </body>
 </html>

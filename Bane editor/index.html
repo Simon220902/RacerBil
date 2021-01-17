@@ -7,19 +7,26 @@
   <script src="track.js"></script>
   </script>  </head>
   <body>
+    <h1>Bane-editor (skal være rundt om centrum)</h1>
+    <h3>KLIK LØS. Hvis du er utilfreds så bare genindlæs siden så starter den på en frisk.</h3>
     <div id="canvas"></div>
     <ul>
       <li><b>Venstreklik</b> - placerer et midterpunkt på banen.</li>
       <li><b>Backspace</b> - sletter det sidste placeret punkt.</li>
       <li><b>'e'</b> - afslutter banen, den tegner stregerne fra det sidst placerede punkt til punkt 0.</li>
+      <li><b>Banebredde</b><input type="range" min="50" max="100" id="trackWidthSlider" onchange="updateTrackWidth()"></li>
+      <li><b>Nuværeden banebredde: <div id="trackWidthValue">50</div></b></li>
     </ul>
     <h3>Når din bane er færdig og du har trykket på 'e' for at færdiggøre banen, prøv at tryk på nedenstående knap.</h3>
     <!--<button onclick="showPoints=!showPoints;">Vis/gem punkter</button>-->
     <button onclick="fillTrack=!fillTrack;">Vis/gem preview af banen</button>
+    
+    
     <h3>Hvis de røde prikker ikke var den indre kant i banen og previewet af banen er en tynd sort streg, så tryk på nedenstående knap når banen er færdig.</h3>
     <button onclick="let tempInner = track.innerPoints; track.innerPoints = track.outerPoints; track.outerPoints = tempInner;">Byt rundt på inder- og yderpunkter.</button>
     <h3>Når du kan se en bane, der ser ud som du vil forvente den kan du gøre som der står nedenunder.</h3>
-    <h1>Kopier nedenstående JSON ind i racerbane inputfeltet på hovedsiden</h1>
+    
+    <h2>Kopier nedenstående JSON ind i racerbane inputfeltet på <a href="../index.html">hovedsiden</a></h1>
     <button onclick="document.getElementById('json').innerText=track.toJSON();">Udskriv JSON</button>
     <p id="json"></p>
   </body>
